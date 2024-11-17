@@ -1,29 +1,31 @@
 #include "libftprintf.h"
 
-int ft_printf(char *format, ...)
+
+
+int ft_printf(const char *format, ...)
 {
     va_list arg;
 
     va_start(arg, format);
 
-    int i = 0;
-    int luck = 0;
-    while (format[i] != '\0')
+    int count = 0;
+    while (*format)
     {
-        if(format[i] == '%')
+        if(*format == '%')
+            count += ft_format(&format, arg);
+        else
         {
-            ft_format(format, va_start);
-            luck++;
-            break;
+            count += ft_putchar(*format);
+            format++;       
         }
-            
-        i++;
+
     }
-    if (luck == 0)
-            return (ft_putstr(format), i);
-    return 0;
+    return count;
 }
 int main()
 {
-    ft_printf("hello hi");
+    int i = ft_printf("hel%d, %d %s %c %d %z", 300, 4000000, "helllllllllll", 't', -2147483648 );
+    printf("\n %d \n", i);
+    int t = printf("hel%d, %d %s %c %d %z", 300, 4000000, "helllllllllll", 't', -2147483648 );
+    printf("\n %d \n", t);
 }

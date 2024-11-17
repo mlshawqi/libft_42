@@ -1,5 +1,5 @@
-#ifndef LIBFT_H
-# define LIBFT_H
+#ifndef LIBFTPRINTF_H
+# define LIBFTPRINTF_H
 
 # include <ctype.h>
 # include <stdio.h>
@@ -8,7 +8,10 @@
 # include <unistd.h>
 # include <stdarg.h>
 
-void    ft_putstr(char *str);
-int ft_printf(char *format, ...);
+int    ft_putstr(char *str);
+int     ft_printf(const char *format, ...);
+void	    ft_putnbr(int n, int *cn);
+int     ft_putchar(char c);
+int ft_format(const char **fr, va_list args);
 
 #endif
