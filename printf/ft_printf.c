@@ -24,8 +24,8 @@ int ft_printf(const char *format, ...)
 }
 int main()
 {
-    int i = ft_printf("hel%d, %d %s %c %d %z", 300, 4000000, "helllllllllll", 't', -2147483648 );
+    int i = ft_printf(" %u ", -7454);
     printf("\n %d \n", i);
-    int t = printf("hel%d, %d %s %c %d %z", 300, 4000000, "helllllllllll", 't', -2147483648 );
+    int t = printf(" %u ", -7454);
     printf("\n %d \n", t);
 }

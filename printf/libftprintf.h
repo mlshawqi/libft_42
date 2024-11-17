@@ -13,5 +13,6 @@ int     ft_printf(const char *format, ...);
 void	    ft_putnbr(int n, int *cn);
 int     ft_putchar(char c);
 int ft_format(const char **fr, va_list args);
+int	ft_decimal(unsigned int n, int *cn);
 
 #endif

@@ -11,7 +11,7 @@ int ft_format(const char **fr, va_list args) {
     else if (**fr == 'c')
         count += ft_putchar((char)va_arg(args, int));
     else if(**fr == 'u')
-        
+        count += ft_decimal(va_arg(args, unsigned int), &count);
     else if (**fr == '%')
         count += ft_putchar('%');
     else
