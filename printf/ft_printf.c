@@ -1,7 +1,5 @@
 #include "libftprintf.h"
 
-
-
 int ft_printf(const char *format, ...)
 {
     va_list arg;
@@ -24,8 +22,10 @@ int ft_printf(const char *format, ...)
 }
 int main()
 {
-    int i = ft_printf(" %u ", -7454);
+    int a = '42';
+    int *g = &a;
+    int i = ft_printf("%p", g);
     printf("\n %d \n", i);
-    int t = printf(" %u ", -7454);
+    int t = printf("%p", g);
     printf("\n %d \n", t);
 }

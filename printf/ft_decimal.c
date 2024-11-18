@@ -1,6 +1,6 @@
 #include "libftprintf.h"
 
-int	ft_decimal(unsigned int n, int *cn)
+void	ft_decimal(unsigned int n, int *cn)
 {
 	if(n > 9)
 	{

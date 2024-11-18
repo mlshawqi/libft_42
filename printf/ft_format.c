@@ -11,7 +11,13 @@ int ft_format(const char **fr, va_list args) {
     else if (**fr == 'c')
         count += ft_putchar((char)va_arg(args, int));
     else if(**fr == 'u')
-        count += ft_decimal(va_arg(args, unsigned int), &count);
+        ft_decimal(va_arg(args, unsigned int), &count);
+    else if (**fr == 'x')
+        ft_hexalow(va_arg(args, unsigned long), &count);
+    else if (**fr == 'X')
+        ft_hexaupp(va_arg(args, unsigned int), &count);
+    else if (**fr == 'p')
+        ft_pointer(va_arg(args, void *), &count);
     else if (**fr == '%')
         count += ft_putchar('%');
     else
