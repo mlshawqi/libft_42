@@ -1,31 +1,30 @@
-#include "libftprintf.h"
+#include "ft_printf.h"
 
-int ft_printf(const char *format, ...)
+int	ft_printf(const char *argument, ...)
 {
-    va_list arg;
+	va_list	arg;
+	int		count;
 
-    va_start(arg, format);
-
-    int count = 0;
-    while (*format)
-    {
-        if(*format == '%')
-            count += ft_format(&format, arg);
-        else
-        {
-            count += ft_putchar(*format);
-            format++;       
-        }
-
-    }
-    return count;
+	va_start(arg, argument);
+	count = 0;
+	while (*argument)
+	{
+		if (*argument == '%')
+		{
+			ft_format(&argument, arg, &count);
+			if (count == -1)
+				return (-1);
+		}
+		else
+			ft_putchar(*argument, &count);
+		argument++;
+	}
+	return (count);
 }
-int main()
-{
-    int a = '42';
-    int *g = &a;
-    int i = ft_printf("%p", g);
-    printf("\n %d \n", i);
-    int t = printf("%p", g);
-    printf("\n %d \n", t);
-}
+// #include <limits.h>
+// int main()
+// {
+
+//     printf("\nlen %d\n", ft_printf(NULL));
+// 	printf(" \nlen %d\n", printf(NULL));
+// }

@@ -1,14 +1,15 @@
-#include "libftprintf.h"
+#include "ft_printf.h"
 
-void    ft_hexalow(unsigned long nbr, int *count)
+void	ft_hexalow(unsigned int nbr, int *len)
 {
-        char base[] = "0123456789abcdef";
+	char	*base;
 
-        if(nbr >= 16)
-        {
-            ft_hexalow((nbr / 16), count);
-            ft_hexalow((nbr % 16), count);
-        }
-        else
-            *count += ft_putchar(base[nbr]);
+	base = "0123456789abcdef";
+	if (nbr < 16)
+		ft_putchar(base[nbr % 16], len);
+	else
+	{
+		ft_hexalow((nbr / 16), len);
+		ft_hexalow((nbr % 16), len);
+	}
 }

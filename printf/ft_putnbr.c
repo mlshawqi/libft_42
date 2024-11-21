@@ -1,20 +1,24 @@
-#include "libftprintf.h"
+#include "ft_printf.h"
 
-void	ft_putnbr(int n, int *cn)
+void	ft_putnbr(long n, int *len)
 {
-	if(n == -2147483648)
-		*cn += ft_putstr("-2147483648");
-	else if(n < 0)
+	if (n == -2147483648)
 	{
-		*cn += ft_putchar('-');
-		n *= -1;
-		ft_putnbr(n, cn);
+		ft_putstr("-2147483648", len);
+		if (*len == -1)
+			return ;
 	}
-	else if(n > 9)
+	else if (n < 0)
 	{
-		ft_putnbr((n / 10), cn);
-		ft_putnbr((n % 10), cn);
+		ft_putchar('-', len);
+		n *= -1;
+		ft_putnbr(n, len);
+	}
+	else if (n > 9)
+	{
+		ft_putnbr((n / 10), len);
+		ft_putnbr((n % 10), len);
 	}
 	else
-		*cn += ft_putchar(n + '0');
+		ft_putchar(n + '0', len);
 }

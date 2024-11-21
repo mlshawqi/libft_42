@@ -1,15 +1,15 @@
-#include "libftprintf.h"
+#include "ft_printf.h"
 
-void    ft_hexaupp(unsigned int nbr, int *count)
+void	ft_hexaupp(unsigned int nbr, int *len)
 {
-        char base[] = "0123456789ABCDEF";
-        unsigned int len = 16;
+	char	*base;
 
-        if(nbr >= len)
-        {
-            ft_hexaupp((nbr / len), count);
-            ft_hexaupp((nbr % len), count);
-        }
-        else
-            *count += ft_putchar(base[nbr]);
+	base = "0123456789ABCDEF";
+	if (nbr >= 16)
+	{
+		ft_hexaupp((nbr / 16), len);
+		ft_hexaupp((nbr % 16), len);
+	}
+	else
+		ft_putchar(base[nbr], len);
 }

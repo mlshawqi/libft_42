@@ -1,12 +1,19 @@
-#include "libftprintf.h"
+#include "ft_printf.h"
 
-int    ft_putstr(char *str)
+void	ft_putstr(char *str, int *len)
 {
-    int i = 0;
-    while(str[i] != '\0')
-    {
-        write(1, &str[i], 1);
-        i++;
-    }
-    return i;
+	int	i;
+
+	i = 0;
+	if (!str)
+	{
+		ft_putstr("(null)", len);
+		return ;
+	}
+	while (str[i] != '\0')
+	{
+		ft_putchar(str[i], len);
+		i++;
+	}
+	len += i;
 }
