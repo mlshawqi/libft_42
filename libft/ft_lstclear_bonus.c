@@ -6,12 +6,10 @@ void	ft_lstclear(t_list **lst, void (*del)(void *))
 
 	if (lst == NULL || del == NULL || *lst == NULL)
 		return ;
-	p = *lst;
 	while (*lst != NULL)
 	{
-		del(p->content);
-		p = p->next;
-		free(*lst);
+		p = (*lst)->next;
+		ft_lstdelone(*lst, del);
 		*lst = p;
 	}
 	*lst = NULL;

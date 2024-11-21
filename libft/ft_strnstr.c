@@ -5,8 +5,6 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 	size_t	i;
 	size_t	j;
 
-    if(!big)
-        return NULL;
 	if (*little == '\0')
 		return ((char *)big);
 	i = 0;

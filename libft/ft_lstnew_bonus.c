@@ -11,4 +11,3 @@ t_list	*ft_lstnew(void *content)
 	node->next = NULL;
 	return (node);
 }
-
