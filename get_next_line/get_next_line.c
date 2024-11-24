@@ -43,19 +43,25 @@ char *get_next_line(int fd)
         return (0);
     }
 
-    bytes_read = read(fd, buf, count);
-    if (bytes_read == -1)
+    int o = 0;
+    while(o == 0)
     {
-        printf("\nhr\n");
-        return (0);
-    }
-    buf[bytes_read] = '\0';
-
-    int nline = newline(buf);
-    if(nline != -1)
-    {
-        printf("\n allocat \n");
-        return (ft_strdup(buf, nline + 1));
+        bytes_read = read(fd, buf, count);
+        if (bytes_read == -1)
+        {
+            printf("\nhr\n");
+            return (0);
+        }
+        buf[bytes_read] = '\0';
+        int nline = newline(buf);
+        if(nline != (-1))
+        (
+            return (ft_strdup(buf, nline + 1));
+        )
+        else
+        (
+            
+        )
     }
     else
         return(get_next_line(fd));
