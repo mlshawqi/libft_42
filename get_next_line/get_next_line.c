@@ -14,7 +14,7 @@ int     newline(char *str)
     }
     return (-1);
 }
-char	*ft_strdup(char *s, int len)
+char	*ft_strndup(char *s, int len)
 {
 	char	*dup;
 	size_t	i;
@@ -37,6 +37,7 @@ char *get_next_line(int fd)
     ssize_t bytes_read;
     char    buf[50];
     size_t  count = 49;
+    char *tmp;
 
     if (fd == -1)
     {
@@ -44,6 +45,7 @@ char *get_next_line(int fd)
     }
 
     int o = 0;
+    int j = 0;
     while(o == 0)
     {
         bytes_read = read(fd, buf, count);
@@ -56,11 +58,18 @@ char *get_next_line(int fd)
         int nline = newline(buf);
         if(nline != (-1))
         (
-            return (ft_strdup(buf, nline + 1));
+            return (ft_strndup(buf, nline + 1));
+            o++;
         )
         else
         (
-            
+            if(j == 0)
+                char *savebuf = ft_strndup(buf, bytes_read);
+            else
+            {
+                savebuf = ft_strjoin(savebif, buf);
+            }
+
         )
     }
     else
