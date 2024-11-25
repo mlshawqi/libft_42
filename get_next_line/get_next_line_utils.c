@@ -1,3 +1,5 @@
+#include "get_next_line.h"
+
 size_t	ft_strlen(const char *s)
 {
 	size_t	len;
@@ -22,6 +24,26 @@ static char	*ft_strcpy(char *dest, char *src)
 	return (dest);
 }
 
+char	*ft_strdup(const char *s)
+{
+	size_t	len;
+	char	*dup;
+	size_t	i;
+
+	len = ft_strlen(s) + 1;
+	dup = (char *)malloc(len * sizeof(char));
+	if (!dup)
+		return (NULL);
+	i = 0;
+	while (i < len - 1)
+	{
+		dup[i] = s[i];
+		i++;
+	}
+	dup[i] = '\0';
+	return (dup);
+}
+
 char	*ft_strjoin(char *s1, char *s2)
 {
 	size_t	lens1;
@@ -43,3 +65,15 @@ char	*ft_strjoin(char *s1, char *s2)
 	ft_strcpy(str + lens1, s2);
 	return (str);
 }
+
+// void	ft_strcpy(char *dest, char *src)
+// {
+// 	int	i;
+// 	i = 0;
+// 	while (src[i] != '\0')
+// 	{
+// 		dest[i] = src[i];
+// 		i++;
+// 	}
+// 	dest[i] = '\0';
+// }

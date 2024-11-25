@@ -1,7 +1,4 @@
-#include <unistd.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <stdio.h>
+#include "get_next_line.h"
 
 int     newline(char *str)
 {
@@ -35,10 +32,10 @@ char	*ft_strndup(char *s, int len)
 char *get_next_line(int fd)
 {
     ssize_t bytes_read;
-    char    buf[50];
-    size_t  count = 49;
-    char *tmp;
-
+    char    buf[100];
+    size_t  count = 99;
+    char *savebuf = NULL;
+    int nline;
     if (fd == -1)
     {
         return (0);
@@ -54,32 +51,47 @@ char *get_next_line(int fd)
             printf("\nhr\n");
             return (0);
         }
+        if(bytes_read == 0)
+        {
+            
+        }
         buf[bytes_read] = '\0';
-        int nline = newline(buf);
-        if(nline != (-1))
-        (
-            return (ft_strndup(buf, nline + 1));
+        nline = newline(buf);
+        if(nline != -1)
             o++;
-        )
-        else
-        (
-            if(j == 0)
-                char *savebuf = ft_strndup(buf, bytes_read);
+        if (j == 0)
+        {
+            if(nline != -1)
+                return (ft_strndup(buf, nline + 1));
+            else
+                savebuf = ft_strndup(buf, bytes_read);
+        }
+        else 
+        {
+            if(o > 0)
+            {
+                char *temp = savebuf;
+                savebuf = ft_strjoin(savebuf, ft_strndup(buf, nline + 1));
+                free(temp);
+            }
             else
             {
-                savebuf = ft_strjoin(savebif, buf);
+                char *temp = savebuf;
+                savebuf = ft_strjoin(savebuf, buf);
+                free(temp);
             }
-
-        )
+        }
+        // if(nline != (-1))
+        //     
+        j++;
     }
-    else
-        return(get_next_line(fd));
+    return (savebuf);
 }
 int main()
 {
     int fd = open("text.txt", O_RDONLY);
 
-    printf("\nfd = %d\n%s\n", fd, get_next_line(fd));
-    printf("\nfd = %d\n%s\n", fd, get_next_line(fd));
-    printf("\nfd = %d\n%s\n", fd, get_next_line(fd));
+    printf("\n%s\n", get_next_line(fd));
+    printf("\n%s\n", get_next_line(fd));
+    printf("\n%s\n", get_next_line(fd));
 }
