@@ -11,6 +11,7 @@ int     newline(char *str)
     }
     return (-1);
 }
+
 char	*ft_strndup(char *s, int len)
 {
 	char	*dup;
@@ -29,49 +30,53 @@ char	*ft_strndup(char *s, int len)
 	return (dup);
 }
 
-char *get_next_line(int fd)
+char   *get_next_line(int fd)
 {
-    ssize_t bytes_read;
-    char    buf[100];
-    size_t  count = 99;
+    static char buf[1024];
+    static ssize_t byte_read = 0;
+    static ssize_t curr_pos = 0;
     char *savebuf = NULL;
     int nline;
-    if (fd == -1)
-    {
-        return (0);
-    }
-
     int o = 0;
     int j = 0;
+    static int first = 0;
     while(o == 0)
     {
-        bytes_read = read(fd, buf, count);
-        if (bytes_read == -1)
+        if(curr_pos >= byte_read)
         {
-            printf("\nhr\n");
-            return (0);
+            byte_read = read(fd, buf, sizeof(buf));
+            if(byte_read < 0)
+                return NULL;
+            buf[byte_read] = '\0';
+            curr_pos = 0;
         }
-        if(bytes_read == 0)
-        {
-            
-        }
-        buf[bytes_read] = '\0';
-        nline = newline(buf);
+
+        nline = newline(buf + curr_pos);
         if(nline != -1)
             o++;
         if (j == 0)
         {
-            if(nline != -1)
-                return (ft_strndup(buf, nline + 1));
+            if(o > 0)
+            {
+
+                curr_pos += (nline + 1);
+                if(first == 0)
+                {
+                    first++;
+                    return (ft_strndup(buf, nline + 1));
+                }
+                printf("\n curr %zu  nline %d byteread %zu\n", curr_pos, nline, byte_read);
+                return (ft_strndup(buf + curr_pos - nline, nline + 1));
+            }             
             else
-                savebuf = ft_strndup(buf, bytes_read);
+                savebuf = ft_strndup(buf, byte_read);
         }
         else 
         {
             if(o > 0)
             {
                 char *temp = savebuf;
-                savebuf = ft_strjoin(savebuf, ft_strndup(buf, nline + 1));
+                savebuf = ft_strjoin(savebuf, ft_strndup(buf + curr_pos, nline + 1));
                 free(temp);
             }
             else
@@ -81,10 +86,9 @@ char *get_next_line(int fd)
                 free(temp);
             }
         }
-        // if(nline != (-1))
-        //     
         j++;
     }
+    curr_pos += (nline + 1);
     return (savebuf);
 }
 int main()
