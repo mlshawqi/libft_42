@@ -66,7 +66,7 @@ char   *get_next_line(int fd)
                     return (ft_strndup(buf, nline + 1));
                 }
                 printf("\n curr %zu  nline %d byteread %zu\n", curr_pos, nline, byte_read);
-                return (ft_strndup(buf + curr_pos - nline, nline + 1));
+                return (ft_strndup(buf + (curr_pos - nline), nline + 1));
             }             
             else
                 savebuf = ft_strndup(buf, byte_read);
