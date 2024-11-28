@@ -11,5 +11,7 @@ char	*ft_strjoin(char *s1, char *s2);
 static char	*ft_strcpy(char *dest, char *src);
 size_t	ft_strlen(const char *s);
 char	*ft_strdup(const char *s);
+int newline(char *str);
+char *ft_strndup(char *s, size_t len);
 
 #endif

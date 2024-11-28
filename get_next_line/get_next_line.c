@@ -1,41 +1,5 @@
 #include "get_next_line.h"
 
-int newline(char *str) {
-    int i = 0;
-
-    if (!str)
-        return -1;
-
-    while (str[i]) 
-    { 
-        if (str[i] == '\n')
-            return i;
-        i++;
-    }
-    return -1;
-}
-
-char *ft_strndup(char *s, size_t len) {
-    char *dup;
-    size_t i;
-
-    if (!s || len == 0)
-        return NULL;
-
-    dup = (char *)malloc((len + 1) * sizeof(char));
-    if (!dup)
-        return NULL;
-
-    i = 0;
-    while (i < len) {
-        dup[i] = s[i];
-        i++;
-    }
-    dup[i] = '\0';
-
-    return dup;
-}
-
 char *get_next_line(int fd) {
     static char buf[1024];
     static ssize_t byte_read = 0;
@@ -103,6 +67,6 @@ int main()
 
     
     printf("\n%s\n", get_next_line(fd));
-    printf("\n%s\n", get_next_line(fd));
-    printf("\n%s\n", get_next_line(fd));
+    //printf("\n%s\n", get_next_line(fd));
+    //printf("\n%s\n", get_next_line(fd));
 }
