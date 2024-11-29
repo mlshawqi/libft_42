@@ -34,7 +34,7 @@ char *ft_strndup(char *s, size_t len)
     if (!s || len == 0)
         return NULL;
 
-    dup = (char *)malloc((len + 1) * sizeof(char));
+    dup = (char *)malloc((len + 1 + 1) * sizeof(char));
     if (!dup)
         return NULL;
 
@@ -43,7 +43,7 @@ char *ft_strndup(char *s, size_t len)
         dup[i] = s[i];
         i++;
     }
-    dup[i] = '\0';
+	dup[i] = '\0';
 
     return dup;
 }
