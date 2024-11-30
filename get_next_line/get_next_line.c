@@ -1,72 +1,105 @@
 #include "get_next_line.h"
 
-char *get_next_line(int fd) {
-    static char buf[1024];
-    static ssize_t byte_read = 0;
-    static ssize_t curr_pos = 0;
-    char *savebuf = NULL;
-    int nline;
-    int o = 0;
-    int j = 0;
-
-    while (o == 0) {
-        // If buffer is exhausted, read more data
-        if (curr_pos >= byte_read) {
-            byte_read = read(fd, buf, sizeof(buf) - 1);
-            if (byte_read < 0) { // Handle read errors
-                free(savebuf);
-                return NULL;
-            }
-            if (byte_read == 0) { // Handle EOF
-                if (savebuf)
-                    return savebuf; // Return remaining data
-                return NULL;
-            }
-            buf[byte_read] = '\0'; // Null-terminate safely
-            curr_pos = 0;
-        }
-
-        // Find newline in the buffer
-        nline = newline(buf + curr_pos);
-        if (nline != -1)
-            o++; // Mark if a newline is found
-
-        // Handle the first iteration
-        if (j == 0) {
-            if (o > 0) {
-                char *line = ft_strndup(buf + curr_pos, nline + 1);
-                curr_pos += (nline + 1);
-                return line;
-            } else {
-                savebuf = ft_strndup(buf + curr_pos, byte_read - curr_pos);
-                curr_pos = byte_read; // Move to the end of the buffer
-            }
-        }
-        // Handle subsequent iterations
-        else {
-            char *temp = savebuf;
-            if (o > 0) {
-                savebuf = ft_strjoin(savebuf, ft_strndup(buf + curr_pos, nline + 1));
-                curr_pos += (nline + 1);
-            } else {
-                savebuf = ft_strjoin(savebuf, ft_strndup(buf + curr_pos, byte_read - curr_pos));
-                curr_pos = byte_read;
-            }
-            free(temp);
-        }
-        j++;
-    }
-
-    return savebuf;
+ssize_t ft_read_fd(int fd, char *buf)
+{
+    ssize_t byte_rd = 0;
+    
+    byte_rd = read(fd, buf, BUFFER_SIZE);
+    if(byte_rd <= 0)
+	    return (byte_rd);
+    buf[byte_rd] = '\0';
+    return (byte_rd);
 }
 
+char    *ft_line(char *buff, ssize_t *pos)
+{
+    int nline = ft_newline(buff + *pos);
 
+    if(nline != -1)
+    {
+	    //printf("\nim here\n");
+	    char	*line = ft_strndup(buff + *pos, nline + 1);
+	    *pos += (nline + 1);
+	    return (line);
+    }
+    return (NULL);
+}
+
+char    ft_savebuf(char *buff, ssize_t *pos, char **savebuf, ssize_t read_byte)
+{
+    int nline = ft_newline(buff + *pos);
+    if(*savebuf != NULL)
+    {
+        char *tmp = *savebuf;
+	*savebuf = ft_strjoin(*savebuf, buff + *pos);
+	//printf("\n---------save = %s  pos = %zu---------\n", *savebuf, *pos);
+	free(tmp);
+	*pos = read_byte;
+    }
+    else
+    {
+        *savebuf = ft_strdup(buff + *pos);
+        *pos = read_byte;
+    }
+}
+
+char *get_next_line(int fd)
+{
+    static char     *buffer;
+    static  ssize_t byte_read = 0;
+    static  ssize_t position = 0;
+    char *savebuf = NULL;
+
+    while(1)
+    {
+        if (position >= byte_read)
+        {
+            buffer = malloc(((size_t)BUFFER_SIZE + 1) * sizeof(char));
+            if(!buffer)
+                return NULL;
+            byte_read = ft_read_fd(fd, buffer);
+            if(byte_read < 0)
+            {
+                free(buffer);
+                return (NULL);
+            }
+	    position = 0;
+	    if(byte_read == 0)
+		    return ("hello");
+        }
+        char    *line = ft_line(buffer + position, &position);
+        if(line && savebuf != NULL)
+     	{
+            free(buffer);
+            return (line);
+        }
+	else if(line)
+	{
+		char *tmp = ft_strjoin(savebuf, line);
+		free(buffer);
+		free(savebuf);
+		free(line);
+		return (tmp);
+	}
+	else
+	{
+        	ft_savebuf(buffer + position, &position, &savebuf, byte_read);
+		//printf("\nsave = %s  posi = %zu  buf = %s\n", savebuf, position, buffer);
+	}
+    }
+
+}/*
+oeieieiejdjdhfnchfuf
+lfmfldmdl
+eldmdmldm
+lememem*/
 int main()
 {
     int fd = open("text.txt", O_RDONLY);
 
-    
-    printf("\n%s\n", get_next_line(fd));
-    //printf("\n%s\n", get_next_line(fd));
-    //printf("\n%s\n", get_next_line(fd));
+    printf("\nfd = %d\n%s\n", fd, get_next_line(fd));
+    printf("\nfd = %d\n%s\n", fd, get_next_line(fd));
+    printf("\nfd = %d\n%s\n", fd, get_next_line(fd));
+    //printf("\nfd = %d\n%s\n", fd, get_next_line(fd));
+    //printf("\nfd = %d\n%s\n", fd, get_next_line(fd));
 }
