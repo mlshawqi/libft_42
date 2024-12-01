@@ -10,7 +10,7 @@ size_t	ft_strlen(const char *s)
 	return (len);
 }
 
-int newline(char *str)
+int ft_newline(char *str)
 {
     int i = 0;
 
@@ -34,7 +34,7 @@ char *ft_strndup(char *s, size_t len)
     if (!s || len == 0)
         return NULL;
 
-    dup = (char *)malloc((len + 1 + 1) * sizeof(char));
+    dup = (char *)malloc((len + 1) * sizeof(char));
     if (!dup)
         return NULL;
 
@@ -48,7 +48,7 @@ char *ft_strndup(char *s, size_t len)
     return dup;
 }
 
-static char	*ft_strcpy(char *dest, char *src)
+char	*ft_strcpy(char *dest, char *src)
 {
 	int	i;
 

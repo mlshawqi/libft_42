@@ -180,7 +180,7 @@ ________________________________________________________________________________
 #include "get_next_line.h"
 
 char *get_next_line(int fd) {
-    static char buf[1024];
+    static char *buf;
     static ssize_t byte_read = 0;
     static ssize_t curr_pos = 0;
     char *savebuf = NULL;
@@ -191,7 +191,8 @@ char *get_next_line(int fd) {
     while (o == 0) {
         // If buffer is exhausted, read more data
         if (curr_pos >= byte_read) {
-            byte_read = read(fd, buf, sizeof(buf) - 1);
+            buf = malloc((BUFFER_SIZE + 1) * sizeof(char));
+            byte_read = read(fd, buf, BUFFER_SIZE);
             if (byte_read < 0) { // Handle read errors
                 free(savebuf);
                 return NULL;
@@ -206,7 +207,7 @@ char *get_next_line(int fd) {
         }
 
         // Find newline in the buffer
-        nline = newline(buf + curr_pos);
+        nline = ft_newline(buf + curr_pos);
         if (nline != -1)
             o++; // Mark if a newline is found
 
@@ -248,4 +249,119 @@ int main()
     printf("\n%s\n", get_next_line(fd));
     //printf("\n%s\n", get_next_line(fd));
     //printf("\n%s\n", get_next_line(fd));
+}
+
+
+
+
+
+_________________________________________________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+ssize_t ft_read_fd(int fd, char *buf, ssize_t *pos)
+{
+    ssize_t byte_rd = 0;
+    
+    byte_rd = read(fd, buf, BUFFER_SIZE);
+    if(byte_rd <= 0)
+	    return (byte_rd);
+    *pos = 0;
+    buf[byte_rd] = '\0';
+    return (byte_rd);
+}
+
+void    ft_free(char **str)
+{
+    if (str && *str)
+    {
+        free(*str);
+        *str = NULL;
+    }
+}
+char    *ft_line(char *buff, ssize_t *pos, char **savebuff)
+{
+    int nline = ft_newline(buff + *pos);
+
+    if(nline != -1)
+    {
+	    //printf("\nim here\n");
+	    char	*line = ft_strndup(buff + *pos, nline + 1);
+        *pos += (nline + 1);
+	    if(line && (*savebuff) != NULL)
+	    {    
+            char *tmp = ft_strjoin(*savebuff, line);
+            ft_free(savebuff);
+            free(line);
+            return (tmp);
+        }
+        return (line);
+    }
+    return (NULL);
+}
+
+void    ft_savebuf(char *buff, ssize_t *pos, char **savebuf, ssize_t read_byte)
+{
+    if(*savebuf != NULL)
+    {
+        char *tmp = *savebuf;
+	    *savebuf = ft_strjoin(*savebuf, buff + *pos);
+	//printf("\n---------save = %s  pos = %zu---------\n", *savebuf, *pos);
+	    free(tmp);
+    }
+    else
+        *savebuf = ft_strdup(buff + *pos);
+    *pos += read_byte;
+}
+
+char *get_next_line(int fd)
+{
+    static char *buffer;
+    static ssize_t byte_read;
+    static ssize_t position;
+    char *savebuf = NULL;
+
+    while (1)
+    {
+        if (position >= byte_read)
+        {
+            buffer = malloc(((size_t)BUFFER_SIZE + 1) * sizeof(char));
+            if (!buffer)
+                return NULL;
+
+            byte_read = ft_read_fd(fd, buffer, &position);
+            if (byte_read <= 0)
+            {
+                ft_free(&buffer);
+                if (savebuf)
+                {
+                    char *tmp = savebuf;
+                    ft_free(&savebuf);
+                    return tmp;
+                }
+                return NULL;
+            }
+        }
+
+        char *line = ft_line(buffer + position, &position, &savebuf);
+        if (line)
+        {
+            if (position >= byte_read)
+                ft_free(&buffer);
+            return line;
+        }
+        else
+        {
+            ft_savebuf(buffer + position, &position, &savebuf, byte_read);
+            ft_free(&buffer);
+        }
+    }
 }
