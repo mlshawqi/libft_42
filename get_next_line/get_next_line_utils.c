@@ -103,15 +103,3 @@ char	*ft_strjoin(char *s1, char *s2)
 	ft_strcpy(str + lens1, s2);
 	return (str);
 }
-
-// void	ft_strcpy(char *dest, char *src)
-// {
-// 	int	i;
-// 	i = 0;
-// 	while (src[i] != '\0')
-// 	{
-// 		dest[i] = src[i];
-// 		i++;
-// 	}
-// 	dest[i] = '\0';
-// }

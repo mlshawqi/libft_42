@@ -39,22 +39,19 @@ char	*ft_strcpy(char *dest, char *src)
 char    *ft_somthingg(char **buf, char **save, ssize_t rd_byte)
 {
     int nline = ft_newline(*buf);
+    char    *line;
+    char    *tp;
+    char    *tmp;
 
-    char    *line = ft_strndup(*buf, nline + 1);
+    line = ft_strndup(*buf, nline + 1);
     if(*(*buf + nline) != '\0')
     {
-        char *tp = malloc((rd_byte - (nline - 1)) * sizeof(char));
-        if(!tp)
-            return (NULL);
-        ft_strcpy(tp, *buf + nline + 1);
-        char *x = *buf;
-        *buf = ft_strdup(tp);
+        tp = *buf;
+        *buf = ft_strdup(*buf + nline + 1);
         ft_free(&tp);
-        free(x);       
     }
     else
-        *buf = NULL;
-
+        ft_free(buf);
 	if(line && (*save) != NULL)
     {    
         char *tmp = ft_strjoin(*save, line);
@@ -76,16 +73,14 @@ void    ft_savebuf(char *buff, char **savebuf)
     else
         *savebuf = ft_strdup(buff);
 }
-char    *ft_tt(ssize_t byte,char **buff, char **savebf)
+char    *ft_error(ssize_t byte,char **buff, char *savebf)
 {
         if (byte <= 0)
         {
             ft_free(buff);
-            if (*savebf)
+            if (savebf)
             {
-                char *tmp = *savebf;
-                ft_free(savebf);
-                return tmp;
+                return (savebf);
             }
             return NULL;
         }
@@ -105,7 +100,7 @@ char *get_next_line(int fd)
         {
             byte_read = ft_read_fd(fd, &buffer);
             if(byte_read <= 0)
-                return (ft_tt(byte_read, &buffer, &savebuf));            
+                return (ft_error(byte_read, &buffer, savebuf));
         }
         if (ft_newline(buffer) != -1)
             return ft_somthingg(&buffer, &savebuf, byte_read);
@@ -120,10 +115,14 @@ char *get_next_line(int fd)
 int main()
 {
     int fd = open("text.txt", O_RDONLY);
-    printf("\n%s\n", get_next_line(fd));
-    printf("\n%s\n", get_next_line(fd));
-    printf("\n%s\n", get_next_line(fd));
-    printf("\n%s\n", get_next_line(fd));
+   
+    char *str =  get_next_line(fd);
+    while(str)
+    {
+    	printf("%s", str);
+	    free(str);
+    	str =  get_next_line(fd);
+    }
     return 0;
 
 }
