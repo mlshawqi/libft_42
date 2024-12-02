@@ -10,44 +10,21 @@ size_t	ft_strlen(const char *s)
 	return (len);
 }
 
-int ft_newline(char *str)
+int	ft_newline(char *str)
 {
-    int i = 0;
+	int	i;
 
-    if (!str)
-        return -1;
-
-    while (str[i]) 
-    { 
-        if (str[i] == '\n')
-            return i;
-        i++;
-    }
-    return -1;
+	i = 0;
+	if (!str)
+		return (-1);
+	while (str[i])
+	{
+		if (str[i] == '\n')
+			return (i);
+		i++;
+	}
+	return (-1);
 }
-
-char *ft_strndup(char *s, size_t len)
-{
-    char *dup;
-    size_t i;
-
-    if (!s || len == 0)
-        return NULL;
-
-    dup = (char *)malloc((len + 1) * sizeof(char));
-    if (!dup)
-        return NULL;
-
-    i = 0;
-    while (i < len) {
-        dup[i] = s[i];
-        i++;
-    }
-	dup[i] = '\0';
-
-    return dup;
-}
-
 char	*ft_strcpy(char *dest, char *src)
 {
 	int	i;
@@ -60,6 +37,25 @@ char	*ft_strcpy(char *dest, char *src)
 	}
 	dest[i] = '\0';
 	return (dest);
+}
+char	*ft_strndup(char *s, size_t len)
+{
+	char	*dup;
+	size_t	i;
+
+	if (!s || len == 0)
+		return (NULL);
+	dup = (char *)malloc((len + 1) * sizeof(char));
+	if (!dup)
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		dup[i] = s[i];
+		i++;
+	}
+	dup[i] = '\0';
+	return (dup);
 }
 
 char	*ft_strdup(const char *s)
