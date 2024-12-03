@@ -47,7 +47,7 @@ char	*ft_newbuf(char **buf, char **save)
 	char	*tp;
 	char	*tmp;
 
-	nline = ft_newline(*buf);
+	nline = ft_str_len(*buf, 0);
 	line = ft_strndup(*buf, nline + 1);
 	if (*(*buf + nline) != '\0')
 	{
@@ -76,7 +76,7 @@ char	*ft_error(ssize_t byte, char **buff, char *savebf)
 			return (savebf);
 		return (NULL);
 	}
-    return (NULL);
+	return (NULL);
 }
 
 char	*get_next_line(int fd)
@@ -96,7 +96,7 @@ char	*get_next_line(int fd)
 			if (byte_read <= 0)
 				return (ft_error(byte_read, &buffer, savebuf));
 		}
-		if (ft_newline(buffer) != -1)
+		if (ft_str_len(buffer, 0) != -1)
 			return (ft_newbuf(&buffer, &savebuf));
 		else
 		{
@@ -105,16 +105,18 @@ char	*get_next_line(int fd)
 		}
 	}
 }
-int main()
+int	main(void)
 {
-    int fd = open("text.txt", O_RDONLY);
+	int		fd;
+	char	*str;
 
-    char *str =  get_next_line(fd);
-    while(str)
-    {
-    	printf("%s", str);
-		 free(str);
-    	str =  get_next_line(fd);
-    }
-    return (0);
+	fd = open("text.txt", O_RDONLY);
+	str = get_next_line(fd);
+	while (str)
+	{
+		printf("%s", str);
+		free(str);
+		str = get_next_line(fd);
+	}
+	return (0);
 }
