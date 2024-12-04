@@ -93,10 +93,6 @@ char	*ft_strjoin(char *s1, char *s2)
 		return (ft_strdup(s1));
 	lens1 = ft_str_len(s1, 1);
 	lens2 = ft_str_len(s2, 1);
-	while (s1[lens1] != '\0')
-		lens1++;
-	while (s2[lens2] != '\0')
-		lens2++;
 	str = (char *)malloc((lens1 + lens2 + 1) * sizeof(char));
 	if (!str)
 		return (NULL);

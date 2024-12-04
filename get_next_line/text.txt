@@ -1,3 +1,0 @@
-line 1 hello again hi
-line 2 hi bye good
-line 3 bye bye

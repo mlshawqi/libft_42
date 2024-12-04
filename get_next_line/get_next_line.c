@@ -1,6 +1,6 @@
 #include "get_next_line.h"
 
-ssize_t	ft_read_fd(int fd, char **buf)
+static ssize_t	ft_read_fd(int fd, char **buf)
 {
 	ssize_t	byte_rd;
 
@@ -15,7 +15,7 @@ ssize_t	ft_read_fd(int fd, char **buf)
 	return (byte_rd);
 }
 
-void	ft_save_free_str(char **str, char *buff, char **savebuf, int sing)
+static void	ft_save_free_str(char **str, char *buff, char **savebuf, int sing)
 {
 	char	*tmp;
 
@@ -40,7 +40,7 @@ void	ft_save_free_str(char **str, char *buff, char **savebuf, int sing)
 	}
 }
 
-char	*ft_newbuf(char **buf, char **save)
+static char	*ft_newbuf(char **buf, char **save)
 {
 	int		nline;
 	char	*line;
@@ -49,7 +49,7 @@ char	*ft_newbuf(char **buf, char **save)
 
 	nline = ft_str_len(*buf, 0);
 	line = ft_strndup(*buf, nline + 1);
-	if (*(*buf + nline) != '\0')
+	if (*(*buf + 1 + nline) != '\0')
 	{
 		tp = *buf;
 		*buf = ft_strdup(*buf + nline + 1);
@@ -67,7 +67,7 @@ char	*ft_newbuf(char **buf, char **save)
 	return (line);
 }
 
-char	*ft_error(ssize_t byte, char **buff, char *savebf)
+static char	*ft_error(ssize_t byte, char **buff, char *savebf)
 {
 	if (byte <= 0)
 	{
@@ -85,7 +85,7 @@ char	*get_next_line(int fd)
 	ssize_t		byte_read;
 	char		*savebuf;
 
-	if (!fd || !BUFFER_SIZE)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	savebuf = NULL;
 	while (1)
@@ -105,18 +105,13 @@ char	*get_next_line(int fd)
 		}
 	}
 }
-int	main(void)
-{
-	int		fd;
-	char	*str;
 
-	fd = open("text.txt", O_RDONLY);
-	str = get_next_line(fd);
-	while (str)
-	{
-		printf("%s", str);
-		free(str);
-		str = get_next_line(fd);
-	}
-	return (0);
-}
+// int	main(void)
+// {
+// 	int		fd;
+
+// 	fd = open("text.txt", O_RDONLY);
+// 	printf("%s", get_next_line(fd));
+// 	// printf("%s", get_next_line(fd));
+// 	return (0);
+// }

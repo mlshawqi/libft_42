@@ -49,7 +49,7 @@ static char	*ft_newbuf(char **buf, char **save)
 
 	nline = ft_str_len(*buf, 0);
 	line = ft_strndup(*buf, nline + 1);
-	if (*(*buf + nline) != '\0')
+	if (*(*buf + nline + 1) != '\0')
 	{
 		tp = *buf;
 		*buf = ft_strdup(*buf + nline + 1);
@@ -85,7 +85,7 @@ char	*get_next_line_bonus(int fd)
 	ssize_t		byte_read;
 	char		*savebuf;
 
-	if (!fd || !BUFFER_SIZE)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	savebuf = NULL;
 	while (1)
@@ -105,42 +105,13 @@ char	*get_next_line_bonus(int fd)
 		}
 	}
 }
+
 int	main(void)
 {
-	int		fd1;
-        int		fd2;
-        int		fd3;
-        int		fd4;
-	char	*str1;
-        char	*str2;
-        char	*str3;
-        char	*str4;
+	//int		fd;
 
-	fd1 = open("text1.txt", O_RDONLY);
-        fd2 = open("text2.txt", O_RDONLY);
-        fd3 = open("text3.txt", O_RDONLY);
-        fd4 = open("text4.txt", O_RDONLY);
-	str1 = get_next_line_bonus(fd1);
-        str2 = get_next_line_bonus(fd2);
-        str3 = get_next_line_bonus(fd3);
-        str4 = get_next_line_bonus(fd4);
-	while ((str1 || str2) || (str3 || str4))
-	{
-		printf("%s", str1);
-		free(str1);
-		str1 = get_next_line_bonus(fd1);
-
-		printf("%s", str2);
-		free(str2);
-		str2 = get_next_line_bonus(fd2);
-		
-                printf("%s", str3);
-		free(str3);
-		str3 = get_next_line_bonus(fd3);
-		
-                printf("%s", str4);
-		free(str4);
-		str4 = get_next_line_bonus(fd4);
-	}
+	// fd = open("text.txt", O_RDONLY);
+	printf("%s", get_next_line_bonus(2));
+	// printf("%s", get_next_line(fd));
 	return (0);
 }
