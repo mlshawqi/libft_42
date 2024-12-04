@@ -67,15 +67,17 @@ static char	*ft_newbuf(char **buf, char **save)
 	return (line);
 }
 
-static char	*ft_error(ssize_t byte, char **buff, char *savebf)
+static char	*ft_error(ssize_t byte, char **buff, char **savebf)
 {
-	if (byte <= 0)
+	ft_save_free_str(buff, NULL, NULL, 0);
+	if (byte == 0)
 	{
-		ft_save_free_str(buff, NULL, NULL, 0);
-		if (savebf)
-			return (savebf);
+		if (*savebf)
+			return (*savebf);
 		return (NULL);
 	}
+	if(*savebf)
+		ft_save_free_str(savebf, NULL, NULL, 0);
 	return (NULL);
 }
 
@@ -94,7 +96,7 @@ char	*get_next_line(int fd)
 		{
 			byte_read = ft_read_fd(fd, &buffer);
 			if (byte_read <= 0)
-				return (ft_error(byte_read, &buffer, savebuf));
+				return (ft_error(byte_read, &buffer, &savebuf));
 		}
 		if (ft_str_len(buffer, 0) != -1)
 			return (ft_newbuf(&buffer, &savebuf));
@@ -110,8 +112,25 @@ char	*get_next_line(int fd)
 // {
 // 	int		fd;
 
-// 	fd = open("text.txt", O_RDONLY);
-// 	printf("%s", get_next_line(fd));
+// 	fd = open("read_error.txt", O_RDONLY);
+// 	char *s = get_next_line(fd);
+// 	s = get_next_line(fd);
+
+// 	// while(s)
+// 	// {
+// 	// 	printf("%s", s);
+// 	// 	free(s);
+// 	// 	s = get_next_line(fd);
+// 	// }
+// 	close(fd);
+// 	fd = open("read_error.txt", O_RDONLY);
+// 	s = get_next_line(fd);
+// 	while(s)
+// 	{
+// 		printf("%s", s);
+// 		free(s);
+// 		s = get_next_line(fd);
+// 	}
 // 	// printf("%s", get_next_line(fd));
 // 	return (0);
 // }
